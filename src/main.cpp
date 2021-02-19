@@ -475,8 +475,6 @@ PYBIND11_MODULE(w2, m) {
     py::class_<BFM>(m, "BFM")
         .def(py::init<int, int, py::array_t<double> &>())
         .def("compute_2d_dual", &BFM::compute_2d_dual)
-        .def("step_update", &BFM::step_update)
         .def("pushforward", &BFM::pushforward)
-        .def("compute_w2", &BFM::compute_w2)
         .def("get_rho", &BFM::get_rho);
 }
