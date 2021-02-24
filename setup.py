@@ -20,6 +20,10 @@ setup(
     author="Wonjun Lee",
     author_email="wlee@math.ucla.edu",
     description="Python wrapper for the back-and-forth method for optimal transport",
-    long_description="The code is based on C code of the back-and-forth method https://github.com/Math-Jacobs/bfm. Link to the paper: https://arxiv.org/pdf/1905.12154.pdf",
+    long_description="""
+        The code is based on C code of the back-and-forth method https://github.com/Math-Jacobs/bfm. 
+        Link to the paper: https://arxiv.org/pdf/1905.12154.pdf
+        """,
+    long_description_content_type="text/markdown",
     ext_modules=ext_modules,
 )
