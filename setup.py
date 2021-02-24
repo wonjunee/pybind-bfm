@@ -20,11 +20,6 @@ setup(
     author="Wonjun Lee",
     author_email="wlee@math.ucla.edu",
     description="Python wrapper for the back-and-forth method for optimal transport",
-    long_description="",
+    long_description="The code is based on C code of the back-and-forth method https://github.com/Math-Jacobs/bfm. Link to the paper: https://arxiv.org/pdf/1905.12154.pdf",
     ext_modules=ext_modules,
-    # extras_require={"test": "pytest"},
-    # # Currently, build_ext only provides an optional "highest supported C++
-    # # level" feature, but in the future it may provide more features.
-#     cmdclass={"build_ext": build_ext},
-#     zip_safe=False,
 )
