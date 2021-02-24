@@ -28,12 +28,17 @@ ext_modules = [
 setup(
     name="w2",
     version=__version__,
-    # author="W",
-    # author_email="wlee@math.ucla.edu",
+    author="Wonjun Lee",
+    author_email="wlee@math.ucla.edu",
     description="Python wrapper for w2",
     long_description="",
     ext_modules=ext_modules,
-    extras_require={"test": "pytest"},
+    install_requires=[
+        "setuptools>=42",
+        "wheel",
+        "pybind11>=2.6.0",
+    ],
+#     extras_require={"test": "pytest"},
     # Currently, build_ext only provides an optional "highest supported C++
     # level" feature, but in the future it may provide more features.
     cmdclass={"build_ext": build_ext},
