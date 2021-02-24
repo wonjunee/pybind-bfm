@@ -7,7 +7,12 @@ import sys
 
 __version__ = "0.0.1"
 
-ext_modules = 
+ext_modules = [
+    Pybind11Extension("w2",
+        ["src/main.cpp"],
+        define_macros = [('VERSION_INFO', __version__)],
+        ),
+]
 
 setup(
     name="w2",
@@ -20,6 +25,6 @@ setup(
     # extras_require={"test": "pytest"},
     # # Currently, build_ext only provides an optional "highest supported C++
     # # level" feature, but in the future it may provide more features.
-    cmdclass={"build_ext": build_ext},
-    # zip_safe=False,
+#     cmdclass={"build_ext": build_ext},
+#     zip_safe=False,
 )
