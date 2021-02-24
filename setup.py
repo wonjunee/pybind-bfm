@@ -20,6 +20,6 @@ setup(
     # extras_require={"test": "pytest"},
     # # Currently, build_ext only provides an optional "highest supported C++
     # # level" feature, but in the future it may provide more features.
-    # cmdclass={"build_ext": build_ext},
+    cmdclass={"build_ext": build_ext},
     # zip_safe=False,
 )
