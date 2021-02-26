@@ -364,14 +364,11 @@ convex_hull* hull;
 
 
     void sampling_pushforward(double *mu){
-        
+
+
         int pcount=n1*n2;
         
         memset(rho,0,pcount*sizeof(double));
-        
-        
-        double xCut=pow(1.0/n1,1.0/3);
-        double yCut=pow(1.0/n2,1.0/3);
         
         for(int i=0;i<n2;i++){
             for(int j=0;j<n1;j++){
@@ -389,47 +386,44 @@ convex_hull* hull;
                     double xStretch=fmax(xStretch0, xStretch1);
                     double yStretch=fmax(yStretch0, yStretch1);
                     
-                    int xSamples=2*fmax(n1*xStretch,1);
-                    int ySamples=2*fmax(n2*yStretch,1);
+                    int xSamples=fmax(n1*xStretch,1);
+                    int ySamples=fmax(n2*yStretch,1);
+
+                    double factor=1/(xSamples*ySamples*1.0);
                     
-                    if(xStretch<xCut&&yStretch<yCut){
-                        
-                        double factor=1/(xSamples*ySamples*1.0);
-                        
-                        for(int l=0;l<ySamples;l++){
-                            for(int k=0;k<xSamples;k++){
-                                
-                                double a=(k+.5)/(xSamples*1.0);
-                                double b=(l+.5)/(ySamples*1.0);
-                                
-                                double xPoint=(1-b)*(1-a)*xMap[i*(n1+1)+j]+(1-b)*a*xMap[i*(n1+1)+j+1]+b*(1-a)*xMap[(i+1)*(n1+1)+j]+a*b*xMap[i*(n1+1)+j+1];
-                                double yPoint=(1-b)*(1-a)*yMap[i*(n1+1)+j]+(1-b)*a*yMap[i*(n1+1)+j+1]+b*(1-a)*yMap[(i+1)*(n1+1)+j]+a*b*yMap[i*(n1+1)+j+1];
-                                
-                                double X=xPoint*n1-.5;
-                                double Y=yPoint*n2-.5;
-                                
-                                int xIndex=X;
-                                int yIndex=Y;
-                                
-                                double xFrac=X-xIndex;
-                                double yFrac=Y-yIndex;
-                                
-                                int xOther=xIndex+1;
-                                int yOther=yIndex+1;
-                                
-                                xIndex=fmin(fmax(xIndex,0),n1-1);
-                                xOther=fmin(fmax(xOther,0),n1-1);
-                                
-                                yIndex=fmin(fmax(yIndex,0),n2-1);
-                                yOther=fmin(fmax(yOther,0),n2-1);
-                                
-                                
-                                rho[yIndex*n1+xIndex]+=(1-xFrac)*(1-yFrac)*mass*factor;
-                                rho[yOther*n1+xIndex]+=(1-xFrac)*yFrac*mass*factor;
-                                rho[yIndex*n1+xOther]+=xFrac*(1-yFrac)*mass*factor;
-                                rho[yOther*n1+xOther]+=xFrac*yFrac*mass*factor;
-                                
-                            }
+                    for(int l=0;l<ySamples;l++){
+                        for(int k=0;k<xSamples;k++){
+                            
+                            double a=(k+.5)/(xSamples*1.0);
+                            double b=(l+.5)/(ySamples*1.0);
+                            
+                            double xPoint=(1-b)*(1-a)*xMap[i*(n1+1)+j]+(1-b)*a*xMap[i*(n1+1)+j+1]+b*(1-a)*xMap[(i+1)*(n1+1)+j]+a*b*xMap[(i+1)*(n1+1)+(j+1)];
+                            double yPoint=(1-b)*(1-a)*yMap[i*(n1+1)+j]+(1-b)*a*yMap[i*(n1+1)+j+1]+b*(1-a)*yMap[(i+1)*(n1+1)+j]+a*b*yMap[(i+1)*(n1+1)+(j+1)];
+                            
+                            double X=xPoint*n1-.5;
+                            double Y=yPoint*n2-.5;
+                            
+                            int xIndex=X;
+                            int yIndex=Y;
+                            
+                            double xFrac=X-xIndex;
+                            double yFrac=Y-yIndex;
+                            
+                            int xOther=xIndex+1;
+                            int yOther=yIndex+1;
+                            
+                            xIndex=fmin(fmax(xIndex,0),n1-1);
+                            xOther=fmin(fmax(xOther,0),n1-1);
+                            
+                            yIndex=fmin(fmax(yIndex,0),n2-1);
+                            yOther=fmin(fmax(yOther,0),n2-1);
+                            
+                            
+                            rho[yIndex*n1+xIndex]+=(1-xFrac)*(1-yFrac)*mass*factor;
+                            rho[yOther*n1+xIndex]+=(1-xFrac)*yFrac*mass*factor;
+                            rho[yIndex*n1+xOther]+=xFrac*(1-yFrac)*mass*factor;
+                            rho[yOther*n1+xOther]+=xFrac*yFrac*mass*factor;
+                            
                         }
                     }
                     
@@ -445,7 +439,6 @@ convex_hull* hull;
         for(int i=0;i<pcount;i++){
             rho[i]*=totalMass/sum;
         }
-        
     }
 
     double step_update(double sigma, double value, double oldValue, double gradSq){
