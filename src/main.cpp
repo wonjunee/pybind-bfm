@@ -31,11 +31,6 @@ public:
 int n1;
 int n2;
 
-double scaleDown;
-double scaleUp;
-double upper;
-double lower;
-
 double totalMass;
 
 double *xMap;
@@ -61,11 +56,6 @@ convex_hull* hull;
         argmin = new int[n];
         temp   = new double[n1*n2];
 
-        scaleDown=.8;
-        scaleUp=1/scaleDown;
-        upper=.75;
-        lower=.25;
-
         xMap=new double[(n1+1)*(n2+1)];
         yMap=new double[(n1+1)*(n2+1)];
 
@@ -75,8 +65,8 @@ convex_hull* hull;
                 double x=j/(n1*1.0);
                 double y=i/(n2*1.0);
                 
-                xMap[i*n1+j]=x;
-                yMap[i*n1+j]=y;
+                xMap[i*(n1+1)+j]=x;
+                yMap[i*(n1+1)+j]=y;
                 
             }
         }
@@ -99,18 +89,7 @@ convex_hull* hull;
         delete hull;
     }
 
-    void get_rho(py::array_t<double> & rho_np){
-        py::buffer_info rho_buf  = rho_np.request();
-        memcpy(static_cast<double *> (rho_buf.ptr), rho, n1*n2*sizeof(double));
-
-    }
-
-    // void compute_2d_dual(double *phi, double *dual){
-    //     compute_2d_dual(dual, phi, hull, n1, n2);
-    //     compute_2d_dual(phi, dual, hull, n1, n2);   
-    // }
-
-    void compute_2d_dual(py::array_t<double> & dual_np, py::array_t<double> & phi_np){
+    void ctransform(py::array_t<double> & dual_np, py::array_t<double> & phi_np){
 
         py::buffer_info phi_buf  = phi_np.request();
         py::buffer_info dual_buf = dual_np.request();
@@ -467,7 +446,6 @@ PYBIND11_MODULE(w2, m) {
 
     py::class_<BFM>(m, "BFM")
         .def(py::init<int, int, py::array_t<double> &>())
-        .def("compute_2d_dual", &BFM::compute_2d_dual)
-        .def("pushforward", &BFM::pushforward)
-        .def("get_rho", &BFM::get_rho);
+        .def("ctransform", &BFM::ctransform)
+        .def("pushforward", &BFM::pushforward);
 }
