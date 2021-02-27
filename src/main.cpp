@@ -420,20 +420,6 @@ convex_hull* hull;
         }
     }
 
-    double step_update(double sigma, double value, double oldValue, double gradSq){
-        
-        double diff=value-oldValue;
-        
-        if(diff>gradSq*sigma*upper){
-            return sigma*scaleUp;
-        }else if(diff<gradSq*sigma*lower){
-            return sigma*scaleDown;
-        }else{
-            return sigma;
-        }
-        
-    }
-
 };
 
 
